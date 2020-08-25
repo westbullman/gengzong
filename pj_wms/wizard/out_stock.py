@@ -14,6 +14,7 @@ class  OutStock(models.TransientModel):
     @api.model
     def confirm(self):
         print("hello World")
+        print("hello World")
 
     @api.depends('order_id')
     @api.onchange('order_id')

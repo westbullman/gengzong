@@ -33,7 +33,6 @@ class OutStockLine(models.TransientModel):
     day_price = fields.Float("每天的价格", help="请输入每天的价格", company_dependent=True,related='product_tmpl_id.day_price')
 
     # lot_id限制在总仓库的
-    @api.model
     def available_lot_id(self):
         lot_id_list=[]
         view_location_id_list=[]
@@ -41,18 +40,19 @@ class OutStockLine(models.TransientModel):
         stock_warehouse_objects = self.env['stock.warehouse'].search([])
         for i in stock_warehouse_objects:
             view_location_id_list.append(i.view_location_id.id)
-        print(view_location_id_list)
         #查询stock.quant
-        stock_quant_objects = self.env['stock.quant'].search([('quantity','>',0)])
-        print(stock_quant_objects)
-        for i in stock_quant_objects:
-            if self.search_location(i.location_id.id) in view_location_id_list:
-                lot_id_list.append(i.lot_id.id)
-        print(lot_id_list)
+        self.env.cr.execute("SELECT location_id, lot_id FROM stock_quant WHERE quantity>0")
+        pairs = self.env.cr.fetchall()
+        print("=======")
+        print(pairs)
+        # stock_quant_objects = self.env['stock.quant'].search([('quantity','>',0)])
+        # print(stock_quant_objects)
+        for i in pairs:
+            if self.search_location(i[0]) in view_location_id_list:
+                lot_id_list.append(i[1])
         return lot_id_list
 
     # 根据location_id查出usage=view的stock.location的id
-    @api.model
     def search_location(self,location_id):
         stock_location_object = self.env['stock.location'].search([('id','=',location_id)])
         if stock_location_object and stock_location_object.usage=='view':

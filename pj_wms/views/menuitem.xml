@@ -7,11 +7,16 @@
         parent = "stock.menu_stock_root"
         sequence="101"/>
 
+    <menuitem name="出入库操作"
+        id="gengzong_out_in_stock_message"
+        parent = "stock.menu_stock_root"
+        sequence="102"/>
+
     <menuitem name="扫码出库"
         id="gengzong_out_stock_message"
         action="out_stock_form_action"
-        parent = "stock.menu_stock_root"
-        sequence="102"/>
+        parent = "pj_wms.gengzong_out_in_stock_message"
+        sequence="1"/>
 
 
 </odoo>

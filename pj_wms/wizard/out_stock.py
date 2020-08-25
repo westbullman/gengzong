@@ -19,7 +19,7 @@ class  OutStock(models.TransientModel):
     @api.onchange('order_id')
     def _on_change_order_id(self):
         if self.order_id:
-            print(self.order_id)
+            self.total = sum(self.order_id.mapped('order_line.product_uom_qty'))
 
 class OutStockLine(models.TransientModel):
     _name = 'out.stock.line'

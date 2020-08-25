@@ -14,7 +14,6 @@ class  OutStock(models.TransientModel):
     @api.model
     def confirm(self):
         print("hello World")
-        print("hello World")
 
     @api.depends('order_id')
     @api.onchange('order_id')
@@ -26,9 +25,40 @@ class OutStockLine(models.TransientModel):
     _name = 'out.stock.line'
 
     stock_id = fields.Many2one('out.stock',string='出库')
-    lot_id = fields.Many2one('stock.production.lot',string='RFID编码')
-    product_tmpl_id = fields.Many2one('product.template',string='产品名称')
+    lot_id = fields.Many2one('stock.production.lot',string='RFID编码',domain=lambda self: [('id', 'in', self.available_lot_id())])
+    product_tmpl_id = fields.Many2one('product.template',related='lot_id.product_id.product_tmpl_id',string='产品名称')
     long = fields.Char(related='product_tmpl_id.long',string='长度')
     width = fields.Char(related='product_tmpl_id.width',string='宽度')
     heigth = fields.Char(related='product_tmpl_id.heigth',string='高度')
     day_price = fields.Float("每天的价格", help="请输入每天的价格", company_dependent=True,related='product_tmpl_id.day_price')
+
+    # lot_id限制在总仓库的
+    @api.model
+    def available_lot_id(self):
+        lot_id_list=[]
+        view_location_id_list=[]
+        #查询仓库的view_location_id数据
+        stock_warehouse_objects = self.env['stock.warehouse'].search([])
+        for i in stock_warehouse_objects:
+            view_location_id_list.append(i.view_location_id.id)
+        print(view_location_id_list)
+        #查询stock.quant
+        stock_quant_objects = self.env['stock.quant'].search([('quantity','>',0)])
+        print(stock_quant_objects)
+        for i in stock_quant_objects:
+            if self.search_location(i.location_id.id) in view_location_id_list:
+                lot_id_list.append(i.lot_id.id)
+        print(lot_id_list)
+        return lot_id_list
+
+    # 根据location_id查出usage=view的stock.location的id
+    @api.model
+    def search_location(self,location_id):
+        stock_location_object = self.env['stock.location'].search([('id','=',location_id)])
+        if stock_location_object and stock_location_object.usage=='view':
+            return stock_location_object.id
+        else:
+            if stock_location_object.location_id:
+               return self.search_location(stock_location_object.location_id.id)
+
+

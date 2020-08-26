@@ -26,6 +26,7 @@
          "views/product_category.xml",
          "wizard/search_lot.xml",
          "wizard/out_stock.xml",
+         "wizard/rental_processing_views.xml",
          "views/menuitem.xml",
     ],
     # "demo": [

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.tools import float_compare
 
 class  OutStock(models.TransientModel):
     _name = 'out.stock'
@@ -11,9 +12,14 @@ class  OutStock(models.TransientModel):
     order_date = fields.Datetime(related='order_id.date_order',string="订单时间")
     total = fields.Float(string='订单应租总数')
 
-    @api.model
     def confirm(self):
-        print("hello World")
+        if self.order_id:
+            status = "pickup"
+            precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
+            lines_to_pickup = self.order_id.order_line.filtered(
+                lambda r: r.state in ['sale', 'done'] and r.is_rental and float_compare(r.product_uom_qty, r.qty_delivered,
+                                                                                        precision_digits=precision) > 0)
+        return self.order_id._open_rental_wizard(status, lines_to_pickup.ids)
 
     @api.depends('order_id')
     @api.onchange('order_id')

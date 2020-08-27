@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api,_
 from odoo.tools import float_compare
+from odoo.exceptions import UserError
 
 class  RentalOrderWizardLine(models.TransientModel):
     _inherit = 'rental.order.wizard.line'
@@ -11,8 +12,11 @@ class  RentalOrderWizardLine(models.TransientModel):
 
     @api.onchange('pickedup_lot_ids')
     def _on_change_pickedup_lot_ids(self):
-        print("更新新的序列号")
-        print(self.pickedup_lot_ids)
+        if self.qty_reserved-self.qty_out-len(self.pickedup_lot_ids) <0:
+            raise UserError(_("出库数量不能大于订单数量,请修正!"))
+        this_num = float(self.qty_out+(len(self.pickedup_lot_ids)))
+        this_product_uom_qty = self.order_line_id.product_uom_qty
+        self.order_out_difference = (this_num)/(this_product_uom_qty)*100
 
     @api.model
     def _default_wizard_line_vals(self, line, status):

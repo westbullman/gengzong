@@ -2,6 +2,7 @@
 from . import search_lot
 from . import out_stock
 from . import rental_order_wizard
+from . import in_stock
 
 
 

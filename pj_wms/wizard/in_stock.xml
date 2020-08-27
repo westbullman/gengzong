@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="in_stock_view_form" model="ir.ui.view">
+        <field name="name">in.stock.form</field>
+        <field name="model">in.stock</field>
+        <field name="arch" type="xml">
+            <form string="入库批次详情">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="order_id" />
+                            <field name="partner_id" />
+                        </group>
+                        <group>
+                            <field name="order_date" />
+                            <field name="total" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <span>
+                        <button string="开始扫码入库" class="btn btn-primary" type="object" name="confirm" />
+                        <button string="关闭" class="oe_link" special="cancel" />
+                    </span>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="in_stock_form_action" model="ir.actions.act_window">
+        <field name="name">In Stock</field>
+        <field name="res_model">in.stock</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
+

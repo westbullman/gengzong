@@ -4,6 +4,9 @@ from odoo import models, fields, api,_
 from odoo.tools import float_compare
 from odoo.exceptions import UserError
 
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
+
 class  RentalOrderWizardLine(models.TransientModel):
     _inherit = 'rental.order.wizard.line'
 
@@ -27,20 +30,23 @@ class  RentalOrderWizardLine(models.TransientModel):
         this_num = float(self.qty_in + (len(self.returned_lot_ids)))
         self.order_in_difference = (this_num) / (self.qty_out) * 100
 
+    @api.model
+    def default_get(self, fields):
+        result = super(RentalOrderWizardLine, self).default_get(fields)
+        result['returned_lot_ids'] = False
+        return result
+
 
     @api.model
     def _default_wizard_line_vals(self, line, status):
-        delay_price = line.product_id._compute_delay_price(fields.Datetime.now() - line.return_date)
-        return {
-            'order_line_id': line.id,
-            'product_id': line.product_id.id,
-            'order_out_difference': ((line.qty_delivered)/line.product_uom_qty)*100,
+        default_line_vals = super(RentalOrderWizardLine, self)._default_wizard_line_vals(line, status)
+        default_line_vals.update({
+            'order_out_difference': ((line.qty_delivered) / line.product_uom_qty) * 100,
             'qty_reserved': line.product_uom_qty,
             'qty_out': line.qty_delivered,
             'qty_in': line.qty_returned,
-            'qty_delivered': line.qty_delivered if status == 'return' else line.product_uom_qty - line.qty_delivered,
-            'qty_returned': line.qty_returned if status == 'pickup' else line.qty_delivered - line.qty_returned,
-            'is_late': line.is_late and delay_price > 0
-        }
+            'returned_lot_ids': [(6, 0, [])]
+        })
+        return default_line_vals
 
 

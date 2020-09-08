@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="rent_agreement_form_view" model="ir.ui.view">
+            <field name="name">rent_agreement_form_view_form</field>
+            <field name="model">rent.agreement</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <group>
+                               <separator string="甲方(出租方)"/>
+                                <field name="party_a"/>
+                                <field name="address_a"/>
+                                <field name="phone"/>
+                                <field name="party_a_contact"/>
+                                <field name="phone_a_contact_mobile"/>
+                                <field name="party_a_fax"/>
+                                <field name="party_a_email"/>
+                            </group>
+                            <group>
+                                <separator string="乙方(承租方)"/>
+                                <field name="party_b"/>
+                                <field name="address_b"/>
+                                <field name="phone_b"/>
+                                <field name="party_b_contact"/>
+                                <field name="phone_b_contact_mobile"/>
+                                <field name="party_b_fax"/>
+                                <field name="party_b_email"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="租赁订单">
+                                <field name="order_ids">
+                                    <tree string="租赁订单明细" editable="bottom">
+                                        <field name="name"/>
+                                        <field name="partner_id"/>
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="date_order"/>
+                                        <field name="amount_total" sum="合计金额"/>
+                                        <field name="state" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="定义">
+                                <field name="define_ids">
+                                    <tree string="定义" editable="bottom">
+                                        <field name="name"/>
+                                        <field name="explain"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="租赁计费、对账及支付">
+                                <field name="pay_ids">
+                                    <tree string="租赁计费、对账及支付" editable="bottom">
+                                        <field name="name"/>
+                                        <field name="explain"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="业务操作要求">
+                                <field name="requirement_ids">
+                                    <tree string="业务操作要求" editable="bottom">
+                                        <field name="explain"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="租赁设备的使用、灭失、破损和赔偿">
+                                <field name="compensate_ids">
+                                    <tree string="租赁设备的使用、灭失、破损和赔偿" editable="bottom">
+                                        <field name="explain"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="承租方权利与义务">
+                                <field name="right_duty_ids">
+                                    <tree string="承租方权利与义务" editable="bottom">
+                                        <field name="explain"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="失信客户的处理">
+                                <field name="process_ids">
+                                    <tree string="失信客户的处理" editable="bottom">
+                                        <field name="explain"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="争议处理">
+                                <field name="dispute_ids">
+                                    <tree string="争议处理" editable="bottom">
+                                        <field name="explain"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="附录">
+                                <field name="appendix"/>
+                            </page>
+
+                        </notebook>
+                        <field name="memo" />
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="rent_agreement_tree_view" model="ir.ui.view">
+            <field name="name">rent_agreement_tree_view_tree</field>
+            <field name="model">rent.agreement</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="租赁合同">
+                    <field name="name" />
+                    <field name="party_a"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_rent_agreement" model="ir.actions.act_window">
+            <field name="name">租赁合同</field>
+            <field name="res_model">rent.agreement</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="rent_agreement_tree_view"/>
+        </record>
+
+    </data>
+</odoo>

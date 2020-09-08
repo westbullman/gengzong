@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--销售-->
+     <record id="sale_order_inherit_view_form_gengzong" model="ir.ui.view">
+        <field name="name">sale.order.inherit.gengzong.wms</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_renting.rental_order_primary_form_view"/>
+        <field name="arch" type="xml">
+          <field name='partner_id' position="after">
+              <field name="rent_agreement_id" required="1"/>
+          </field>
+        </field>
+  </record>
+</odoo>

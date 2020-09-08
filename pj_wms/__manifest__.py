@@ -24,6 +24,8 @@
         "security/ir.model.access.csv",
          "views/product_template.xml",
          "views/product_category.xml",
+         "views/rent_agreement.xml",
+         "views/sale_order.xml",
          "wizard/search_lot.xml",
          "wizard/out_stock.xml",
          "wizard/in_stock.xml",

@@ -2,3 +2,11 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_out_stock_user,out.stock,model_out_stock,base.group_user,1,1,1,1
 access_in_stock_user,in.stock,model_in_stock,base.group_user,1,1,1,1
 access_out_stock_line_user,out.stock.line,model_out_stock_line,base.group_user,1,1,1,1
+access_rent_agreement_user,rent.agreement,model_rent_agreement,base.group_user,1,1,1,1
+access_rent_define_user,rent.define,model_rent_define,base.group_user,1,1,1,1
+access_rent_pay_user,rent.pay,model_rent_pay,base.group_user,1,1,1,1
+access_operation_requirement_user,operation.requirement,model_operation_requirement,base.group_user,1,1,1,1
+access_rent_compensate_user,rent.compensate,model_rent_compensate,base.group_user,1,1,1,1
+access_right_duty_user,right.duty,model_right_duty,base.group_user,1,1,1,1
+access_customer_process_user,customer.process,model_customer_process,base.group_user,1,1,1,1
+access_dispute_handle_user,dispute.handle,model_dispute_handle,base.group_user,1,1,1,1

@@ -24,5 +24,10 @@
         parent = "pj_wms.gengzong_out_in_stock_message"
         sequence="2"/>
 
+    <menuitem id="menu_rent_agreement"
+        parent="sale_renting.rental_menu_root"
+        name="租赁合同"
+        action="pj_wms.action_rent_agreement"
+        sequence="1"/>
 
 </odoo>
